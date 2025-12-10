@@ -91,9 +91,7 @@ export const Header = () => {
 									Sing in
 								</button>
 
-								<button onClick={handleClicBtnAuth} className='py-1.5 px-5 hover:outline hover:outline-gray-500 transition-all '>
-									Register
-								</button>
+
 								<Link
 									href='/upload-image'
 									className='py-1.5 px-5 outline hover:bg-blue-500 hover:text-white transition-all '>
