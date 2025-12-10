@@ -4,7 +4,7 @@ export const ModalAuth = ({
 	children,
 }: {
 	isOpen: boolean;
-	onClose: React.MouseEventHandler<HTMLButtonElement>;
+	onClose: React.MouseEventHandler;
 	children: React.ReactNode;
 }) => {
 	if (!isOpen) return null;
