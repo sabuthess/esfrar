@@ -1,29 +1,18 @@
+
 import { Github } from "lucide-react";
-// import { signIn, useSession } from "next-auth/react";
-// import { redirect } from "next/navigation";
+
+
+const BACKEND_URL_BASE = process.env.NEXT_PUBLIC_BACKEND_URL_BASE;
+
 
 export const Login = () => {
-	/* 	const { data: session } = useSession();
-
-	if (session) redirect("/");
-
-	const handleSocialLogin = async (
+	const handleSocialLogin =  (
 		provider: "google" | "facebook" | "github"
 	) => {
-		try {
-			const res = await signIn(provider, {
-				callbackUrl: "/",
-				redirect: false,
-			});
+		window.location.href = `${BACKEND_URL_BASE}/api/${provider}`;
+	}
 
-			if (res?.error) {
-				console.error("Social login error:", res.error);
-			}
-		} catch (error) {
-			console.error(`${provider} login error:`, error);
-		}
-	};
- */
+
 	return (
 		<>
 			<div className='relative z-10 w-full max-w-md p-8  bg-none'>
@@ -33,9 +22,9 @@ export const Login = () => {
 
 				<div className='flex flex-col gap-4'>
 					{/* Google Button */}
-					<button
-						// onClick={() => handleSocialLogin("google")}
-						className='w-full flex items-center gap-10 p-4 bg-white/10 hover:bg-[#16a084]/20 backdrop-blur-md border border-white/20 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-[#16a084]/20 group'>
+					<button 
+					onClick={() => handleSocialLogin("google")}
+					className='w-full flex items-center gap-10 p-4 bg-white/10 hover:bg-[#16a084]/20 backdrop-blur-md border border-white/20 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-[#16a084]/20 group'>
 						<svg className='w-5 h-5' viewBox='0 0 24 24'>
 							<path
 								fill='#4285F4'
@@ -59,7 +48,7 @@ export const Login = () => {
 
 					{/* Facebook Button */}
 					<button
-						// onClick={() => handleSocialLogin("facebook")}
+						onClick={() => handleSocialLogin("facebook")}
 						className='w-full flex items-center gap-10 gap-3 p-4 bg-white/10 hover:bg-[#16a084]/20 backdrop-blur-md border border-white/20 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-[#16a084]/20 group'>
 						<svg className='w-5 h-5' viewBox='0 0 24 24' fill='#1877F2'>
 							<path d='M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z' />
@@ -73,7 +62,7 @@ export const Login = () => {
 					<button
 						// onClick={() => handleSocialLogin("github")}
 						className='w-full flex items-center gap-10 p-4 bg-white/10 hover:bg-[#16a084]/20 backdrop-blur-md border border-white/20 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-[#16a084]/20 group'>
-						<Github className='w-5 h-5 text-white' /> 
+						<Github className='w-5 h-5 text-white' />
 						<span className='text-white font-medium'>Continue with GitHub</span>
 					</button>
 
