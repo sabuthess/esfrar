@@ -18,7 +18,7 @@ export const uploadImage = (req, res) => {
 				file_path: `uploads/${req.file.filename}`,
 			});
 
-			res.status(200).json({ message: "Imagen subida con exito" });
+			res.status(201).json({ message: "Imagen subida con exito" });
 		} catch (error) {
 			res.status(500).json({ message: "Internal server error" });
 			console.log(error);
@@ -34,6 +34,70 @@ export const deleteImage = async (req, res) => {
 		res.status(200).json({ message: "Imagen eliminada con exito" });
 	} catch (error) {
 		res.status(500).json({ message: "No se pudo eliminar la imagen" });
+		console.log(error);
+	}
+};
+
+export const getAllImages = async (req, res) => {
+	try {
+		const result = await imageModel.get_all_images();
+
+		res
+			.status(200)
+			.json({ data: result, message: "Imagenes obtenidas successfully" });
+	} catch (error) {
+		res.status(500).json({ message: "No se pudo obtener todas las imagenes" });
+		console.log(error);
+	}
+};
+// ver por que no trae las imagenes
+export const getImagesByUser = async (req, res) => {
+	try {
+		let { user_id } = await req.params;
+		const result = await imageModel.get_images_by_user({ user_id });
+		console.log(user_id);
+
+		res
+			.status(200)
+			.json({
+				data: result,
+				message: "Imagenes del usuario obtenidas exitoxamente",
+			});
+	} catch (error) {
+		res
+			.status(500)
+			.json({ message: "No se pudo obtener las imagenes del usuario" });
+		console.log(error);
+	}
+};
+
+export const getASingleImage = async (req, res) => {
+	try {
+		let { image_id } = await req.params;
+		const result = await imageModel.get_a_single_image({ image_id });
+		console.log(image_id);
+
+		res
+			.status(200)
+			.json({ data: result, message: "Imagen obtenida exitoxamente" });
+	} catch (error) {
+		res.status(500).json({ message: "No se pudo obtener la imagen" });
+		console.log(error);
+	}
+};
+
+export const getSearchImages = async (req, res) => {
+	try {
+		let { search } = await req.query;
+		const result = await imageModel.get_search_images({ query: search.trim() });
+
+		res
+			.status(200)
+			.json({ data: result, message: "Imagenes obtenidas exitoxamente" });
+	} catch (error) {
+		res
+			.status(500)
+			.json({ message: "No se pudo obtener las imagenes guardadas" });
 		console.log(error);
 	}
 };
