@@ -57,12 +57,10 @@ export const getImagesByUser = async (req, res) => {
 		const result = await imageModel.get_images_by_user({ user_id });
 		console.log(user_id);
 
-		res
-			.status(200)
-			.json({
-				data: result,
-				message: "Imagenes del usuario obtenidas exitoxamente",
-			});
+		res.status(200).json({
+			data: result,
+			message: "Imagenes del usuario obtenidas exitoxamente",
+		});
 	} catch (error) {
 		res
 			.status(500)
@@ -99,5 +97,75 @@ export const getSearchImages = async (req, res) => {
 			.status(500)
 			.json({ message: "No se pudo obtener las imagenes guardadas" });
 		console.log(error);
+	}
+};
+
+// Logic of favorites
+
+export const addImageToFavorites = async (req, res) => {
+	try {
+		let { image_id } = await req.params;
+		let { user_id } = await req.body;
+
+		await imageModel.add_to_favorites({ image_id, user_id });
+		res.status(200).json({
+			message: "Imagen añadida a favoritos con exito",
+		});
+	} catch (error) {
+		res.status(500).json({ message: "No puede añadir a favoritos la imagen" });
+		console.log(error);
+	}
+};
+
+export const removeImageFromFavorites = async (req, res) => {
+	try {
+		let { image_id } = await req.params;
+		let { user_id } = await req.body;
+
+		await imageModel.remove_from_favorites({
+			image_id,
+			user_id,
+		});
+		res.status(200).json({
+			message: "Imagen eliminada de favoritos con exito",
+		});
+	} catch (error) {
+		res
+			.status(500)
+			.json({ message: "No puede eliminar de favoritos la imagen" });
+		console.log(error);
+	}
+};
+
+export const getImagesFavoritesByUser = async (req, res) => {
+	try {
+		let { user_id } = await req.params;
+
+		const result = await imageModel.get_images_favorites_by_user({ user_id });
+		res.status(200).json({
+			data: result,
+			message: "Imagenes obtenidas de favoritos con exito",
+		});
+	} catch (error) {
+		res
+			.status(500)
+			.json({ message: "No puede obtener de favoritos las imagenes" });
+		console.log(error);
+	}
+};
+
+export const getIsFavorite = async (req, res) => {
+	let { image_id, user_id } = await req.body;
+
+	const result = await imageModel.its_on_favorites({ image_id, user_id });
+
+	if (result == "Is favorite") {
+		res.status(200).json({
+			message: "La imagen esta en favoritos",
+		});
+	} else {
+		res.status(200).json({
+			message: "La imagen no esta en favoritos",
+		});
 	}
 };
