@@ -157,7 +157,7 @@ export const getImagesFavoritesByUser = async (req, res) => {
 export const getIsFavorite = async (req, res) => {
 	let { image_id, user_id } = await req.body;
 
-	const result = await imageModel.its_on_favorites({ image_id, user_id });
+	const result = await imageModel.its_in_favorites({ image_id, user_id });
 
 	if (result == "Is favorite") {
 		res.status(200).json({
@@ -166,6 +166,76 @@ export const getIsFavorite = async (req, res) => {
 	} else {
 		res.status(200).json({
 			message: "La imagen no esta en favoritos",
+		});
+	}
+};
+
+// Logic of likes
+
+export const addImageToLikes = async (req, res) => {
+	try {
+		let { image_id } = await req.params;
+		let { user_id } = await req.body;
+
+		await imageModel.add_to_likes({ image_id, user_id });
+		res.status(200).json({
+			message: "Imagen añadida a me gusta con exito",
+		});
+	} catch (error) {
+		res.status(500).json({ message: "No puede añadir a me gusta la imagen" });
+		console.log(error);
+	}
+};
+
+export const removeImageFromLikes = async (req, res) => {
+	try {
+		let { image_id } = await req.params;
+		let { user_id } = await req.body;
+
+		await imageModel.remove_from_favorites({
+			image_id,
+			user_id,
+		});
+		res.status(200).json({
+			message: "Imagen eliminada de favoritos con exito",
+		});
+	} catch (error) {
+		res
+			.status(500)
+			.json({ message: "No puede eliminar de favoritos la imagen" });
+		console.log(error);
+	}
+};
+
+export const getImagesLikesByUser = async (req, res) => {
+	try {
+		let { user_id } = await req.params;
+
+		const result = await imageModel.get_images_likes_by_user({ user_id });
+		res.status(200).json({
+			data: result,
+			message: "Imagenes obtenidas de me gusta con exito",
+		});
+	} catch (error) {
+		res
+			.status(500)
+			.json({ message: "No puedes obtener de me gusta las imagenes" });
+		console.log(error);
+	}
+};
+
+export const getIsLike = async (req, res) => {
+	let { image_id, user_id } = await req.body;
+
+	const result = await imageModel.its_in_likes({ image_id, user_id });
+
+	if (result == "Is likes") {
+		res.status(200).json({
+			message: "La imagen esta en me gusta",
+		});
+	} else {
+		res.status(200).json({
+			message: "La imagen no esta en me gusta",
 		});
 	}
 };

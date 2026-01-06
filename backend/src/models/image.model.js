@@ -80,7 +80,7 @@ export const imageModel = {
 		const [rows] = await db.query(sql, [user_id]);
 		return rows;
 	},
-	its_on_favorites: async ({ image_id, user_id }) => {
+	its_inW_favorites: async ({ image_id, user_id }) => {
 		const sql = `SELECT EXISTS ( SELECT 1 FROM images_favorites WHERE image_id=? AND user_id=?) AS is_favorite  `;
 
 		const [rows] = await db.query(sql, [image_id, user_id]);
@@ -94,9 +94,31 @@ export const imageModel = {
 
 	// Logic of likes
 
-	add_to_likes: async () => {},
+	add_to_likes: async ({ image_id, user_id }) => {
+		const sql = `INSERT INTO images_likes (image_id, user_id) VALUES(?, ?)`;
+		const result = await db.query(sql, [image_id, user_id]);
 
-	remove_from_likes: async () => {},
-	get_images_likes_by_user: async () => {},
-	its_in_likes: async () => {},
+		return result;
+	},
+	remove_from_likes: async ({ image_id, user_id }) => {
+		const sql = `DELETE FROM images_likes WHERE image_id=? AND user_id=?  `;
+		const result = await db.query(sql, [image_id, user_id]);
+		return result;
+	},
+	get_images_likes_by_user: async ({ user_id }) => {
+		const sql = `SELECT * FROM images_likes WHERE user_id=?  `;
+		const [rows] = await db.query(sql, [user_id]);
+		return rows;
+	},
+	its_in_likes: async ({ image_id, user_id }) => {
+		const sql = `SELECT EXISTS ( SELECT 1 FROM images_likes WHERE image_id=? AND user_id=?) AS is_favorite  `;
+
+		const [rows] = await db.query(sql, [image_id, user_id]);
+
+		if (rows[0].is_favorite === 1) {
+			return "Is likes";
+		} else {
+			return "Isn't likes";
+		}
+	},
 };
