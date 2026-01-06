@@ -1,12 +1,10 @@
 import express from "express"
 import cors from  "cors"
-import authRoutes from "./routes/auth.route.js"
-import session from "express-session"
-import passport from "passport";
+
 import {dotenv_config} from "./config/dotenv.js";
 
 // const imagesRouters = require("./routes/images.routes")
-
+import imageRoutes from "./routes/image.routes.js"
 
 const app = express()
 
@@ -17,7 +15,7 @@ app.use(cors())
 app.use(express.json())
 
 
-app.use(session({
+/* app.use(session({
     secret: "supersecret",
     resave: false,
     saveUninitialized: false
@@ -27,10 +25,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-app.use("/api", authRoutes)
+app.use("/api", authRoutes) */
+app.use("/api", imageRoutes)
 
 app.get("/", (req,res) => {
-
+    res.send("Hello world!")
 })
 
 
