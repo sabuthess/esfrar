@@ -19,7 +19,8 @@ export const imageModel = {
 
     },
     delete_image: async({user_id, image_id}) => {
-        const sql = `DELETE FROM image WHERE user_id=? AND image_id=?`
+        
+        const sql = `DELETE FROM image WHERE user_id=? AND id=?` // change this id by image_id in the db
         const result = await db.query(sql, [user_id, image_id])
 
         return result
