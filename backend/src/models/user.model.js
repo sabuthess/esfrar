@@ -1,25 +1,54 @@
 import db from "../config/config.js";
 
-export const User = {
-	async create(username, email, password) {
-		const q = `
-                INSERT INTO user(username, email, )
-                VALUES (?, ?, ?)`;
-
-		const [result] = await db.query(q, [username, email, password]);
-
-		return result;
+export const userModel = {
+	create_with_provider: async ({
+		provider_id,
+		username,
+		email,
+		profile_picture,
+		email_verified,
+	}) => {
+		const sql = `
+		INSERT INTO users (provider_id, username, email, profile_picture, email_verified)
+		VALUES (?, ?, ?, ?, ?)
+	`;
+		const [result] = await db.query(sql, [
+			provider_id,
+			username,
+			email,
+			profile_picture,
+			email_verified ?? false,
+		]);
+		return {
+			user_id: result.insertId,
+			provider_id,
+			username,
+			email,
+			profile_picture,
+			email_verified: email_verified ?? false,
+		};
 	},
 
-	async findByEmail(email) {
-		const q = "SELECT * FROM user WHERE email = ?";
-		let [row] = await db.query(q, [email]);
-
-		return row;
+	create_without_provider: async ({ email, password }) => {
+		const sql = `
+		INSERT INTO users ( email, password)
+		VALUES (?, ?)
+	`;
+		const [result] = await db.query(sql, [email, password]);
+		return { user_id: result.insertId, email };
 	},
 
-	// TODO update data of user profile by example name, picture, etc  
+	find_by_email: async ({ email }) => {
+		const sql = `SELECT * FROM users WHERE email =?`;
+		const [rows] = await db.query(sql, [email]);
 
-	async update() {},
+		return rows[0] || null;
+	},
+
+	find_by_id: async ({ user_id }) => {
+		const sql = `SELECT * FROM users WHERE user_id =?`;
+		const [rows] = await db.query(sql, [user_id]);
+
+		return rows[0] || null;
+	},
 };
-
