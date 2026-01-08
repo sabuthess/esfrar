@@ -1,7 +1,7 @@
 import mysql from "mysql2/promise.js";
 import {dotenv_config} from "./dotenv.js";
 
-async function connectDB() {
+
 	const pool = mysql.createPool({
 		host: dotenv_config.db.host,
 		user: dotenv_config.db.user,
@@ -20,7 +20,6 @@ async function connectDB() {
 		console.error("Error to the connecting MySQL:", err);
 	}
 
-	return pool;
-}
 
-export default connectDB;
+
+export default pool;
